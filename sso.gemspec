@@ -5,7 +5,7 @@ require "sso/version"
 
 # Describe your gem and declare its dependencies:
 Gem::Specification.new do |s|
-  s.name        = "sso"
+  s.name        = "doorkeeper-sso"
   s.version     = Sso::VERSION
   s.authors     = ["John Wong"]
   s.email       = ["john@flexnode.com"]
