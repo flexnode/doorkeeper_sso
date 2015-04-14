@@ -5,14 +5,14 @@ require "sso/version"
 
 # Describe your gem and declare its dependencies:
 Gem::Specification.new do |s|
-  s.name        = "doorkeeper-sso"
+  s.name        = "doorkeeper_sso"
   s.version     = Sso::VERSION
   s.authors     = ["John Wong"]
   s.email       = ["john@flexnode.com"]
   s.summary     = 'Leveraging Doorkeeper as single-sign-on OAuth server.'
   s.description = "#{s.summary} To provide true single-sign-OUT, every request on an OAuth client app is verified with the SSO server."
   s.license     = "MIT"
-  s.homepage    = 'https://github.com/flexnode/sso'
+  s.homepage    = 'https://github.com/flexnode/doorkeeper-sso'
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]
   s.test_files  = Dir['spec/**/*'] & `git ls-files -z`.split("\0")
