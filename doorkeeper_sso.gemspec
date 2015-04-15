@@ -26,7 +26,6 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'warden', '>= 1.2.3'
 
   # Development
-  s.add_development_dependency 'doorkeeper', '>= 2.0.0'
   s.add_development_dependency 'database_cleaner', '>= 1.4'
   s.add_development_dependency 'pg', '>= 0.18'
   s.add_development_dependency 'rspec-rails', '>= 3.0'
