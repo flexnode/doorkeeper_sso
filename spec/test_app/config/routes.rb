@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  use_doorkeeper
 
-  mount Sso::Engine => "/sso"
+  # Devise
+  # devise_for :users
 end

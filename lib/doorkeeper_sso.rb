@@ -1,1 +1,4 @@
-require 'sso'
+require "sso"
+
+module DoorkeeperSso
+end

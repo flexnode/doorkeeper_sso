@@ -3,13 +3,25 @@ ENV["RAILS_ENV"] ||= 'test'
 
 # SimpleCov for rails
 require 'simplecov'
-SimpleCov.start 'rails' do
-  add_filter "/app/admin/"
-end
+SimpleCov.start 'rails'
+
 require 'spec_helper'
-require File.expand_path("../../config/environment", __FILE__)
+# require File.expand_path("../test_app/config/environment", __FILE__)
+
+# Combustion ordering for requires
+require 'combustion'
+# require 'capybara/rspec'
+
+Combustion.path = 'spec/test_app'
+Combustion.initialize! :all
+
+
 require 'rspec/rails'
+# require 'capybara/rails'
 require 'shoulda/matchers'
+require 'fabrication'
+require 'vcr'
+
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -27,13 +39,16 @@ require 'shoulda/matchers'
 #
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
+# Require fabricators manually
+Dir[Rails.root.join("../fabricators/**/*fabricator.rb")].each { |f| require f }
+
 # Checks for pending migrations before tests are run.
 # If you are not using ActiveRecord, you can remove this line.
 ActiveRecord::Migration.maintain_test_schema!
 
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
-  config.fixture_path = "#{::Rails.root}/spec/fixtures"
+  # config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false

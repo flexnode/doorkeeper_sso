@@ -1,0 +1,3 @@
+--color
+--format NyanCatWideFormatter
+--require spec_helper
