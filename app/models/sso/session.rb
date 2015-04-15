@@ -69,7 +69,7 @@ module Sso
 
         master_sso_session = active.master.find_by!(access_grant_id: oauth_grant.id)
 
-        if master_sso_session.update_attribute(:access_token_id, oauth_token.id)
+        if master_sso_session.update_attributes(access_token_id: oauth_token.id, application_id: oauth_token.application_id)
           debug { "#register_access_token : #{master_sso_session.id} with Access Token ID #{oauth_token.id} which is #{oauth_token.token}" }
         else
           error { "#register_access_token : FAILED to update oauth_access_token_id" }
