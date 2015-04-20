@@ -63,8 +63,8 @@ module Sso
       end
 
       def update_master_with_access_token(grant_token, access_token)
-        oauth_grant  = Doorkeeper::AccessGrant.by_token(grant_token)
-        oauth_token  = Doorkeeper::AccessToken.by_token(access_token)
+        oauth_grant  = ::Doorkeeper::AccessGrant.by_token(grant_token)
+        oauth_token  = ::Doorkeeper::AccessToken.by_token(access_token)
         return false if oauth_token.blank? or oauth_grant.blank?
 
         master_sso_session = active.master.find_by!(access_grant_id: oauth_grant.id)
