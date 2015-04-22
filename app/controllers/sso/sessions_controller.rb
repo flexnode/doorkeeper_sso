@@ -17,9 +17,9 @@ module Sso
 
     # Generate an SSO:Session
     def create
-      render json: {}
-      # @session  = Sso::Session.generate(@user, doorkeeper_token, params )
-      # respond_with @session, :location => sso.sessions_url
+      #render json: {}
+      @session  = Sso::Session.generate(@user, doorkeeper_token, params )
+      respond_with @session, :location => sso.sessions_url
     end
 
     protected
