@@ -17,6 +17,8 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]
   s.test_files  = Dir['spec/**/*'] & `git ls-files -z`.split("\0")
 
+  s.required_ruby_version = '>= 1.9'
+
   s.add_dependency "rails", ">= 4.0"
   s.add_dependency 'devise', '>= 3.4'
   s.add_dependency 'doorkeeper', '>= 2.0.0'
