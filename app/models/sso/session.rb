@@ -43,13 +43,14 @@ module Sso
       end
 
       def logout(sso_session_id)
-        sso_session = find(sso_session_id)
-        group_id = sso_session.group_id
+        if sso_session = find_by_id(sso_session_id)
+          group_id = sso_session.group_id
 
-        debug { "Sso::Session#logout - Revoking Session Group #{sso_session.group_id.inspect} from Session #{sso_session.id.inspect}" }
-        count = where(group_id: group_id).update_all revoked_at: Time.current, revoke_reason: "logout"
-        debug { "Successfully removed #{count.inspect} sessions." }
-        count
+          debug { "Sso::Session#logout - Revoking Session Group #{sso_session.group_id.inspect} from Session #{sso_session.id.inspect}" }
+          count = where(group_id: group_id).update_all revoked_at: Time.current, revoke_reason: "logout"
+          debug { "Successfully removed #{count.inspect} sessions." }
+          count
+        end
       end
 
       def update_master_with_grant(master_sso_session_id, oauth_grant)

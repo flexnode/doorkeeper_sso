@@ -4,6 +4,7 @@ module Sso
   module Doorkeeper
     module TokensControllerMixin
       extend ActiveSupport::Concern
+      include ::Sso::Logging
 
       included do
         after_action :after_token_create, only: :create

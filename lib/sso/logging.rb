@@ -5,7 +5,7 @@ module Sso
   module Logging
     extend ActiveSupport::Concern
 
-    class_methods do
+    module ClassMethods
       def debug(&block)
         logger && logger.debug(progname, &block)
       end
