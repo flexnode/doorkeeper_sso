@@ -24,6 +24,5 @@ class CreateSsoSessions < ActiveRecord::Migration
     add_index :sso_sessions, :secret
     add_index :sso_sessions, :ip
     add_index :sso_sessions, :revoke_reason
-
   end
 end

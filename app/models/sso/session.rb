@@ -1,11 +1,13 @@
 module Sso
   class Session < ActiveRecord::Base
     include ::Sso::Logging
+
     # FIXME: Not sure to use application or doorkeeper_application_id
     belongs_to :application, class_name: 'Doorkeeper::Application'  #,  inverse_of: :sso_sessions
     belongs_to :access_grant, class_name: 'Doorkeeper::AccessGrant' #, inverse_of: :sso_sessions
     belongs_to :access_token, class_name: 'Doorkeeper::AccessToken' #, inverse_of: :sso_sessions
     belongs_to :owner, class_name: 'User' #, inverse_of: :sso_sessions
+    has_many   :sso_clients
 
     validates :group_id, presence: true
     validates :owner_id, presence: true
