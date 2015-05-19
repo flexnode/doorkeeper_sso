@@ -1,6 +1,6 @@
 Fabricator(:api_application) do
-  name { Faker::Internet.domain_word }
-  api_key { Faker::Lorem.characters(16) }
+  name { FFaker::Internet.domain_word }
+  api_key { FFaker::Lorem.characters(16) }
 end
 
 # == Schema Information

@@ -21,7 +21,6 @@ gem 'warden'
 
 group :test do
   gem 'rspec-rails'
-  gem 'ffaker'
   gem 'nyan-cat-formatter', github: 'mattsears/nyan-cat-formatter'
   gem 'fabrication'
   gem 'database_cleaner'
