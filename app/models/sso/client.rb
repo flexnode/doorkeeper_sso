@@ -7,8 +7,6 @@ module Sso
     belongs_to :access_grant, class_name: 'Doorkeeper::AccessGrant' #, inverse_of: :sso_sessions
     belongs_to :access_token, class_name: 'Doorkeeper::AccessToken' #, inverse_of: :sso_sessions
 
-    validates :access_token, presence: true, unless: "access_grant.blank?"
-
     class << self
       def find_by_grant_token(token)
         find_by!(access_grant: ::Doorkeeper::AccessGrant.by_token(token))
