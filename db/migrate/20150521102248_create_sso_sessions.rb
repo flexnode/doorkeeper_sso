@@ -2,7 +2,7 @@ class CreateSsoSessions < ActiveRecord::Migration
   def change
     enable_extension 'uuid-ossp'
 
-    create_table :sso_sessions, id: :uuid do |t|
+    create_table :sso_sessions, id: :uuid, force: true do |t|
       t.references  "access_grant", index: true
       t.references  "access_token", index: true
       t.references  "application",  index: true

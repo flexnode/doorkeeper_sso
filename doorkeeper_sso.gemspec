@@ -19,9 +19,9 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = '>= 1.9'
 
-  s.add_dependency "rails", ">= 4.0"
-  s.add_dependency 'devise', '>= 3.4'
-  s.add_dependency 'doorkeeper', '>= 2.0.0'
+  s.add_dependency "rails", "~> 4.0"
+  s.add_dependency 'devise', '~> 3.4'
+  s.add_dependency 'doorkeeper', '~> 2.0'
 
   s.add_runtime_dependency 'omniauth-oauth2', '>= 1.2'
   s.add_runtime_dependency 'signature', '>=  0.1.8'
