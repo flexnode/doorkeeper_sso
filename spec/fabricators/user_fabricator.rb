@@ -1,7 +1,7 @@
 Fabricator(:user) do
-  first_name FFaker::Name.name
-  email FFaker::Internet.email
-  password FFaker::Internet.password
+  first_name { FFaker::Name.name }
+  email { FFaker::Internet.email }
+  password { FFaker::Internet.password }
   password_confirmation { |attrs| "#{attrs[:password]}" }
 end
 

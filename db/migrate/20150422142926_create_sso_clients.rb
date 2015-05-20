@@ -7,8 +7,7 @@ class CreateSsoClients < ActiveRecord::Migration
       t.references  "access_grant", index: true
       t.references  "access_token", index: true
       t.references  "application",  index: true
-      t.string      "secret",       null: false, index: true
-      t.string      "ip",           null: false
+      t.string      "ip"
       t.string      "agent"
       t.string      "location"
       t.string      "device"

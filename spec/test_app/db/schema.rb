@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150422142926) do
+ActiveRecord::Schema.define(version: 20150519065143) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -71,8 +71,7 @@ ActiveRecord::Schema.define(version: 20150422142926) do
     t.integer  "access_grant_id"
     t.integer  "access_token_id"
     t.integer  "application_id"
-    t.string   "secret",          null: false
-    t.string   "ip",              null: false
+    t.string   "ip"
     t.string   "agent"
     t.string   "location"
     t.string   "device"
@@ -84,7 +83,6 @@ ActiveRecord::Schema.define(version: 20150422142926) do
   add_index "sso_clients", ["access_grant_id"], name: "index_sso_clients_on_access_grant_id", using: :btree
   add_index "sso_clients", ["access_token_id"], name: "index_sso_clients_on_access_token_id", using: :btree
   add_index "sso_clients", ["application_id"], name: "index_sso_clients_on_application_id", using: :btree
-  add_index "sso_clients", ["secret"], name: "index_sso_clients_on_secret", using: :btree
   add_index "sso_clients", ["sso_session_id"], name: "index_sso_clients_on_sso_session_id", using: :btree
 
   create_table "sso_sessions", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
@@ -94,9 +92,6 @@ ActiveRecord::Schema.define(version: 20150422142926) do
     t.integer  "owner_id",        null: false
     t.string   "group_id",        null: false
     t.string   "secret",          null: false
-    t.inet     "ip",              null: false
-    t.string   "agent"
-    t.string   "location"
     t.datetime "activity_at",     null: false
     t.datetime "revoked_at"
     t.string   "revoke_reason"
@@ -108,7 +103,6 @@ ActiveRecord::Schema.define(version: 20150422142926) do
   add_index "sso_sessions", ["access_token_id"], name: "index_sso_sessions_on_access_token_id", using: :btree
   add_index "sso_sessions", ["application_id"], name: "index_sso_sessions_on_application_id", using: :btree
   add_index "sso_sessions", ["group_id"], name: "index_sso_sessions_on_group_id", using: :btree
-  add_index "sso_sessions", ["ip"], name: "index_sso_sessions_on_ip", using: :btree
   add_index "sso_sessions", ["owner_id", "access_token_id", "application_id"], name: "one_access_token_per_owner", unique: true, where: "((revoked_at IS NULL) AND (access_token_id IS NOT NULL))", using: :btree
   add_index "sso_sessions", ["owner_id"], name: "index_sso_sessions_on_owner_id", using: :btree
   add_index "sso_sessions", ["revoke_reason"], name: "index_sso_sessions_on_revoke_reason", using: :btree

@@ -18,7 +18,9 @@ module Sso
     # Generate an SSO:Session
     def create
       #render json: {}
-      @session  = Sso::Session.generate(@user, doorkeeper_token, params )
+      client = ::Sso::Client.find_by_access_token(doorkeeper_token.token)
+      client.update!(client_params)
+      @session = client.session
       respond_with @session, :location => sso.sessions_url
     end
 
@@ -26,6 +28,10 @@ module Sso
 
     def find_user
       @user = User.find(doorkeeper_token.resource_owner_id)
+    end
+
+    def client_params
+      params.permit(:ip, :agent)
     end
 
   end
