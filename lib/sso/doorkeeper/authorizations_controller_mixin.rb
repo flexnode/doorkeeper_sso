@@ -18,8 +18,6 @@ module Sso
         warden_session = session["warden.user.user.session"]
         session = Sso::Session.find_by!(id: warden_session["sso_session_id"])
 
-        # raise "Sso::Session.update_master_with_grant - #{session.id.inspect}, #{code_response.auth.token.inspect}"
-
         if session.try(:active?)
           error { "AuthorizationsControllerMixin - Sso::Session Inactive #{session.inspect}"}
           warden.logout(:user) and return

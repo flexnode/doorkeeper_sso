@@ -66,48 +66,6 @@ ActiveRecord::Schema.define(version: 20150519065143) do
 
   add_index "oauth_applications", ["uid"], name: "index_oauth_applications_on_uid", unique: true, using: :btree
 
-  create_table "sso_clients", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
-    t.uuid     "sso_session_id"
-    t.integer  "access_grant_id"
-    t.integer  "access_token_id"
-    t.integer  "application_id"
-    t.string   "ip"
-    t.string   "agent"
-    t.string   "location"
-    t.string   "device"
-    t.datetime "activity_at"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
-  end
-
-  add_index "sso_clients", ["access_grant_id"], name: "index_sso_clients_on_access_grant_id", using: :btree
-  add_index "sso_clients", ["access_token_id"], name: "index_sso_clients_on_access_token_id", using: :btree
-  add_index "sso_clients", ["application_id"], name: "index_sso_clients_on_application_id", using: :btree
-  add_index "sso_clients", ["sso_session_id"], name: "index_sso_clients_on_sso_session_id", using: :btree
-
-  create_table "sso_sessions", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
-    t.integer  "access_grant_id"
-    t.integer  "access_token_id"
-    t.integer  "application_id"
-    t.integer  "owner_id",        null: false
-    t.string   "group_id",        null: false
-    t.string   "secret",          null: false
-    t.datetime "activity_at",     null: false
-    t.datetime "revoked_at"
-    t.string   "revoke_reason"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "sso_sessions", ["access_grant_id"], name: "index_sso_sessions_on_access_grant_id", using: :btree
-  add_index "sso_sessions", ["access_token_id"], name: "index_sso_sessions_on_access_token_id", using: :btree
-  add_index "sso_sessions", ["application_id"], name: "index_sso_sessions_on_application_id", using: :btree
-  add_index "sso_sessions", ["group_id"], name: "index_sso_sessions_on_group_id", using: :btree
-  add_index "sso_sessions", ["owner_id", "access_token_id", "application_id"], name: "one_access_token_per_owner", unique: true, where: "((revoked_at IS NULL) AND (access_token_id IS NOT NULL))", using: :btree
-  add_index "sso_sessions", ["owner_id"], name: "index_sso_sessions_on_owner_id", using: :btree
-  add_index "sso_sessions", ["revoke_reason"], name: "index_sso_sessions_on_revoke_reason", using: :btree
-  add_index "sso_sessions", ["secret"], name: "index_sso_sessions_on_secret", using: :btree
-
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "",   null: false
     t.string   "encrypted_password",     default: "",   null: false

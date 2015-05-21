@@ -3,9 +3,9 @@ module Sso
     include ::Sso::Logging
 
     belongs_to :session, class_name: 'Sso::Session', foreign_key: :sso_session_id
-    belongs_to :application, class_name: 'Doorkeeper::Application'  #,  inverse_of: :sso_sessions
-    belongs_to :access_grant, class_name: 'Doorkeeper::AccessGrant' #, inverse_of: :sso_sessions
-    belongs_to :access_token, class_name: 'Doorkeeper::AccessToken' #, inverse_of: :sso_sessions
+    belongs_to :application, class_name: 'Doorkeeper::Application',  inverse_of: :sso_clients
+    belongs_to :access_grant, class_name: 'Doorkeeper::AccessGrant', inverse_of: :sso_clients
+    belongs_to :access_token, class_name: 'Doorkeeper::AccessToken', inverse_of: :sso_clients
 
     class << self
       def find_by_grant_token(token)

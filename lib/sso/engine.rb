@@ -11,6 +11,10 @@ module Sso
     end
 
     config.after_initialize do
+      ::Doorkeeper::Application.send(:include, Sso::Doorkeeper::ApplicationMixin)
+      ::Doorkeeper::AccessGrant.send(:include, Sso::Doorkeeper::AccessGrantMixin)
+      ::Doorkeeper::AccessToken.send(:include, Sso::Doorkeeper::AccessTokenMixin)
+
 
       ::Doorkeeper::TokensController.send(:include, AbstractController::Callbacks)
       ::Doorkeeper::TokensController.send(:include, Sso::Doorkeeper::TokensControllerMixin)

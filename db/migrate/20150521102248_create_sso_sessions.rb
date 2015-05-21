@@ -15,7 +15,7 @@ class CreateSsoSessions < ActiveRecord::Migration
       t.datetime "activity_at",     null: false
       t.datetime "revoked_at"
       t.string   "revoke_reason"
-      t.timestamps
+      t.timestamps null: false
     end
 
     add_index :sso_sessions, [:owner_id, :access_token_id, :application_id], where: 'revoked_at IS NULL AND access_token_id IS NOT NULL', unique: true, name: :one_access_token_per_owner
