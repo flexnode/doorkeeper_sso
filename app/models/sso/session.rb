@@ -63,14 +63,9 @@ module Sso
       end
 
       def logout(sso_session_id)
-        if sso_session = find_by_id(sso_session_id)
-          group_id = sso_session.group_id
-
-          debug { "Sso::Session#logout - Revoking Session Group #{sso_session.group_id.inspect} from Session #{sso_session.id.inspect}" }
-          count = where(group_id: group_id).update_all revoked_at: Time.current, revoke_reason: "logout"
-          debug { "Successfully removed #{count.inspect} sessions." }
-          count
-        end
+        session = find_by_id(sso_session_id)
+        return false if session.blank?
+        session.logout
       end
 
       # def update_master_with_grant(master_sso_session_id, oauth_grant)
@@ -108,6 +103,10 @@ module Sso
 
     def active?
       revoked_at.blank?
+    end
+
+    def logout
+      update revoked_at: Time.current, revoke_reason: "logout"
     end
 
   private

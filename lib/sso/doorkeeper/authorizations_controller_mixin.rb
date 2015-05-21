@@ -22,7 +22,7 @@ module Sso
 
         if session.try(:active?)
           error { "AuthorizationsControllerMixin - Sso::Session Inactive #{session.inspect}"}
-          warden.logout and return
+          warden.logout(:user) and return
         end
 
         if oauth_grant
@@ -30,7 +30,7 @@ module Sso
           session.clients.find_or_create_by!(access_grant_id: oauth_grant.id)
         else
           error { "AuthorizationsControllerMixin - Unable to get grant id"}
-          warden.logout and return
+          warden.logout(:user) and return
         end
       end
     end
