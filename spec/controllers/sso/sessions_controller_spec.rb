@@ -56,8 +56,8 @@ RSpec.describe Sso::SessionsController, :type => :controller do
 
       it { expect(response).to have_http_status(:created) }
       it { expect(assigns(:session)).to eq master_sso_session }
-      it { expect(master_sso_session.clients.order("created_at DESC").first).to eq ::Sso::Client.find_by(access_token: access_token) }
-      it { expect(master_sso_session.clients.order("created_at DESC").first.ip).to eq "202.188.0.133" }
+      it { expect(master_sso_session.clients).to include ::Sso::Client.find_by(access_token: access_token) }
+      it { expect(master_sso_session.clients.map(&:ip)).to include "202.188.0.133" }
     end
   end
 
