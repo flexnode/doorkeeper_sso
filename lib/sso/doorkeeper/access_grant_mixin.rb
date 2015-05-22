@@ -5,7 +5,7 @@ module Sso
       include ::Sso::Logging
 
       included do
-        has_many :sso_clients, class_name: 'Sso::Client', foreign_key: :access_grant_id
+        has_one :sso_client, class_name: 'Sso::Client', foreign_key: :access_grant_id
       end
     end
   end

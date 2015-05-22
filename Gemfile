@@ -26,7 +26,7 @@ group :test do
   gem 'database_cleaner'
   gem 'vcr'
   gem 'webmock'
-  gem "shoulda-matchers", require: false
+  gem "shoulda-matchers"
   gem 'simplecov', require: false
   gem 'timecop'
   gem 'combustion'

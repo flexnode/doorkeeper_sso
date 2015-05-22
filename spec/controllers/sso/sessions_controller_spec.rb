@@ -4,21 +4,21 @@ RSpec.describe Sso::SessionsController, :type => :controller do
   routes { Sso::Engine.routes }
   render_views
 
-  describe "GET show" do
+  describe "GET jsonp" do
     let(:user) { Fabricate(:user) }
 
     context "logged_in" do
       before() {  sign_in user }
 
       it "returns not authorized" do
-        get :show, format: :json
+        get :jsonp, format: :json
         expect(response).to have_http_status(:ok)
       end
     end
 
     context "not logged_in" do
       it "returns not authorized" do
-        get :show, format: :json
+        get :jsonp, format: :json
         expect(response).to have_http_status(:unauthorized)
       end
     end

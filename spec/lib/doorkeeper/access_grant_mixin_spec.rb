@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Doorkeeper::AccessGrant, :type => :model do
   describe "associations" do
-    it { is_expected.to have_many(:sso_clients).class_name('Sso::Client').with_foreign_key(:access_grant_id) }
+    it { is_expected.to have_one(:sso_client).class_name('Sso::Client').with_foreign_key(:access_grant_id) }
   end
 
   describe "assignment" do
@@ -24,6 +24,6 @@ RSpec.describe Doorkeeper::AccessGrant, :type => :model do
                                   access_token_id: access_token.id,
                                   access_grant_id: access_grant.id) }
 
-    it { expect(access_grant.sso_clients).to eq [ client ] }
+    it { expect(access_grant.sso_client).to eq client }
   end
 end
