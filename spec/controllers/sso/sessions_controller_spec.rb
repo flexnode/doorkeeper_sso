@@ -24,6 +24,45 @@ RSpec.describe Sso::SessionsController, :type => :controller do
     end
   end
 
+  describe "GET show" do
+    let(:user) { Fabricate(:user) }
+
+    context "not logged_in" do
+      it do
+        get :show, format: :json
+        expect(response).to have_http_status(:unauthorized)
+      end
+    end
+
+    context "logged_in" do
+      let(:user) { Fabricate(:user) }
+      let(:application) { Fabricate('Doorkeeper::Application') }
+      let(:access_token) { Fabricate('Doorkeeper::AccessToken',
+                                     resource_owner_id: user.id) }
+      let(:access_grant) { Fabricate('Doorkeeper::AccessGrant',
+                                     application_id: application.id,
+                                     resource_owner_id: user.id,
+                                     redirect_uri: 'http://localhost:3002/oauth/callback'
+                                    ) }
+
+      let(:session) {  Fabricate('Sso::Session', owner: user) }
+      let!(:client) {  Fabricate('Sso::Client', session: session,
+                                    application_id: application.id,
+                                    access_token_id: access_token.id,
+                                    access_grant_id: access_grant.id) }
+
+      before do
+        allow(controller).to receive(:doorkeeper_authorize!).and_return(true)
+        allow(controller).to receive(:doorkeeper_token).and_return(access_token)
+
+        get :show, format: :json
+      end
+
+      it { expect(response).to have_http_status(:ok) }
+      it { expect(assigns(:session)).to eq session }
+    end
+  end
+
   describe "POST create" do
     let(:user) { Fabricate(:user) }
     let(:params) { { :ip => "202.188.0.133", :agent => "Chrome", format: :json } }
