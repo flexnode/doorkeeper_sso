@@ -1,5 +1,5 @@
 module Sso
-  class SessionsController < ApplicationController
+  class SessionsController < Sso::ApplicationController
 
     before_action :authenticate_user!, only: :jsonp
     before_action :doorkeeper_authorize!, only: [:show, :create]
@@ -24,6 +24,7 @@ module Sso
 
     # Passport exchange
     # Passport Strategy first exchange
+    # Insider : Client information from Apps should always be trusted
     def create
       # passport.load_user!
       # passport.create_chip!
