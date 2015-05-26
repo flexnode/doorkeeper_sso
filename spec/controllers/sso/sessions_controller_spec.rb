@@ -4,7 +4,7 @@ RSpec.describe Sso::SessionsController, :type => :controller do
   routes { Sso::Engine.routes }
   render_views
 
-  describe "GET jsonp" do
+  pending "GET jsonp" do
     let(:user) { Fabricate(:user) }
 
     context "logged_in" do
