@@ -1,0 +1,33 @@
+{
+  "type": "object",
+  "required" : [
+    "id",
+    "active?",
+    "owner"
+  ],
+  "properties": {
+    "id" : { "type" : "string" },
+    "active?" : { "type" : "boolean" },
+    "revoked_at" : { "type": ["string", "null"], "format": "date-time" },
+    "revoke_reason" : { "type": ["string", "null"] },
+    "owner" : {
+      "type" : "object",
+      "required" : [
+        "id",
+        "name",
+        "email",
+        "first_name",
+        "last_name",
+        "lang"
+      ],
+      "properties" : {
+        "id" : { "type" : "integer" },
+        "name" : { "type" : "string" },
+        "email" : { "type" : "string" },
+        "first_name" : { "type" : "string" },
+        "last_name" : { "type" : "string" },
+        "lang" : { "type" : "string" }
+      }
+    }
+  }
+}

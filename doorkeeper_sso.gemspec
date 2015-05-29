@@ -26,6 +26,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'omniauth-oauth2', '>= 1.2'
   s.add_runtime_dependency 'signature', '>=  0.1.8'
   s.add_runtime_dependency 'warden', '>= 1.2.3'
+  s.add_runtime_dependency 'active_model_serializers', '~> 0.10.0.rc1'
 
   # Development
   s.add_development_dependency 'database_cleaner', '>= 1.4'
@@ -40,4 +41,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'nyan-cat-formatter', '>= 0.11'
   s.add_development_dependency 'combustion', '~> 0.5.3'
   s.add_development_dependency 'ffaker', '~> 2'
+  s.add_development_dependency 'json-schema', '~> 2.5'
 end

@@ -19,7 +19,7 @@ module Sso
     # Returns passport
     def show
       @session = current_client.session
-      respond_with @session, :location => sso.sessions_url
+      render json: @session, serializer: Sso::SessionSerializer
     end
 
     # Passport exchange
@@ -32,7 +32,7 @@ module Sso
       current_client.update!(client_params)
 
       @session = current_client.session
-      respond_with @session, :location => sso.sessions_url
+      render json: @session, status: :created, serializer: Sso::SessionSerializer
     end
 
     ################################################################################

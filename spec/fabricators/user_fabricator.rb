@@ -1,5 +1,7 @@
 Fabricator(:user) do
   first_name { FFaker::Name.name }
+  last_name { FFaker::Name.last_name }
+  name { |attrs| [attrs[:first_name], attrs[:last_name]].join(" ") }
   email { FFaker::Internet.email }
   password { FFaker::Internet.password }
   password_confirmation { |attrs| "#{attrs[:password]}" }

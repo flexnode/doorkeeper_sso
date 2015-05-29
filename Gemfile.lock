@@ -9,6 +9,7 @@ PATH
   remote: .
   specs:
     doorkeeper_sso (0.1.0.pre.alpha)
+      active_model_serializers (~> 0.10.0.rc1)
       devise (~> 3.4)
       doorkeeper (~> 2.0)
       omniauth-oauth2 (>= 1.2)
@@ -38,6 +39,8 @@ GEM
       erubis (~> 2.7.0)
       rails-dom-testing (~> 1.0, >= 1.0.5)
       rails-html-sanitizer (~> 1.0, >= 1.0.1)
+    active_model_serializers (0.10.0.rc1)
+      activemodel (>= 4.0)
     activejob (4.2.1)
       activesupport (= 4.2.1)
       globalid (>= 0.3.0)
@@ -86,12 +89,14 @@ GEM
     hashie (3.4.1)
     i18n (0.7.0)
     json (1.8.2)
+    json-schema (2.5.1)
+      addressable (~> 2.3.7)
     jwt (1.4.1)
     loofah (2.0.1)
       nokogiri (>= 1.5.9)
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
-    mime-types (2.5)
+    mime-types (2.6.1)
     mini_portile (0.6.2)
     minitest (5.5.1)
     multi_json (1.11.0)
@@ -175,9 +180,9 @@ GEM
       multi_json (~> 1.0)
       simplecov-html (~> 0.9.0)
     simplecov-html (0.9.0)
-    sprockets (3.0.3)
+    sprockets (3.1.0)
       rack (~> 1.0)
-    sprockets-rails (2.2.4)
+    sprockets-rails (2.3.1)
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (>= 2.8, < 4.0)
@@ -197,6 +202,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  active_model_serializers
   combustion
   database_cleaner
   devise
@@ -204,6 +210,7 @@ DEPENDENCIES
   doorkeeper_sso!
   fabrication
   ffaker (~> 2)
+  json-schema
   nyan-cat-formatter!
   omniauth-oauth2
   pg (>= 0.18)

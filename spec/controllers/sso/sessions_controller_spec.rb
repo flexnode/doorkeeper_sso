@@ -60,6 +60,7 @@ RSpec.describe Sso::SessionsController, :type => :controller do
 
       it { expect(response).to have_http_status(:ok) }
       it { expect(assigns(:session)).to eq session }
+      it { expect(response).to match_response_schema("session") }
     end
   end
 
@@ -95,6 +96,7 @@ RSpec.describe Sso::SessionsController, :type => :controller do
 
       it { expect(response).to have_http_status(:created) }
       it { expect(assigns(:session)).to eq master_sso_session }
+      it { expect(response).to match_response_schema("session") }
       it { expect(master_sso_session.clients).to include ::Sso::Client.find_by(access_token: access_token) }
       it { expect(master_sso_session.clients.map(&:ip)).to include "202.188.0.133" }
     end

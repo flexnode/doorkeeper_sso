@@ -18,6 +18,7 @@ gem 'devise'
 gem 'doorkeeper'
 gem 'omniauth-oauth2'
 gem 'warden'
+gem 'active_model_serializers'
 
 group :test do
   gem 'rspec-rails'
@@ -30,4 +31,5 @@ group :test do
   gem 'simplecov', require: false
   gem 'timecop'
   gem 'combustion'
+  gem 'json-schema'
 end
