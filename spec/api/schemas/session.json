@@ -3,6 +3,7 @@
   "required" : [
     "id",
     "active?",
+    "secret",
     "owner"
   ],
   "properties": {
@@ -10,6 +11,7 @@
     "active?" : { "type" : "boolean" },
     "revoked_at" : { "type": ["string", "null"], "format": "date-time" },
     "revoke_reason" : { "type": ["string", "null"] },
+    "secret" : { "type" : "string" },
     "owner" : {
       "type" : "object",
       "required" : [
