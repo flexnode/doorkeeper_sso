@@ -18,17 +18,18 @@ gem 'devise'
 gem 'doorkeeper'
 gem 'omniauth-oauth2'
 gem 'warden'
+gem 'active_model_serializers'
 
 group :test do
   gem 'rspec-rails'
-  gem 'ffaker'
   gem 'nyan-cat-formatter', github: 'mattsears/nyan-cat-formatter'
   gem 'fabrication'
   gem 'database_cleaner'
   gem 'vcr'
   gem 'webmock'
-  gem "shoulda-matchers", require: false
+  gem "shoulda-matchers"
   gem 'simplecov', require: false
   gem 'timecop'
   gem 'combustion'
+  gem 'json-schema'
 end

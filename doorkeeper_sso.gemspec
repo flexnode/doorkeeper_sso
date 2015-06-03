@@ -19,13 +19,14 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = '>= 1.9'
 
-  s.add_dependency "rails", ">= 4.0"
-  s.add_dependency 'devise', '>= 3.4'
-  s.add_dependency 'doorkeeper', '>= 2.0.0'
+  s.add_dependency "rails", "~> 4.0"
+  s.add_dependency 'devise', '~> 3.4'
+  s.add_dependency 'doorkeeper', '~> 2.0'
 
   s.add_runtime_dependency 'omniauth-oauth2', '>= 1.2'
   s.add_runtime_dependency 'signature', '>=  0.1.8'
   s.add_runtime_dependency 'warden', '>= 1.2.3'
+  s.add_runtime_dependency 'active_model_serializers', '~> 0.10.0.rc1'
 
   # Development
   s.add_development_dependency 'database_cleaner', '>= 1.4'
@@ -39,5 +40,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'vcr', '>= 2.9'
   s.add_development_dependency 'nyan-cat-formatter', '>= 0.11'
   s.add_development_dependency 'combustion', '~> 0.5.3'
-  s.add_development_dependency 'ffaker', '>= 1'
+  s.add_development_dependency 'ffaker', '~> 2'
+  s.add_development_dependency 'json-schema', '~> 2.5'
 end

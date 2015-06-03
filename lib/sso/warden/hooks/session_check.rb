@@ -1,7 +1,7 @@
 module Sso
   module Warden
     module Hooks
-      class AfterAuthentication
+      class SessionCheck
         include ::Sso::Logging
 
         attr_reader :user, :warden, :options
@@ -19,17 +19,13 @@ module Sso
         end
 
         def call
-          debug { "Starting hook because this is considered the first login of the current session..." }
-          generate_session
-        end
+          debug { "Starting hook after user is fetched into the session" }
 
-        def generate_session
-          debug { "Generating a Sso:Session for user #{user.id.inspect} for the session cookie at the Sso server..." }
-          attributes = {  ip: request.ip, agent: request.user_agent }
-
-          sso_session = Sso::Session.generate_master(user, attributes)
-          debug { "Sso:Session with ID #{sso_session.id} generated successfuly. Persisting it in session..." }
-          session["sso_session_id"] = sso_session.id.to_s
+          # Infinite loop with BeforeLogout - before logout runs this too
+          unless Sso::Session.find_by(id: session["sso_session_id"]).try(:active?)
+            warden.logout(:user)
+            throw(:warden, :scope => scope, :reason => "Sso::Session not found")
+          end
         end
 
         def scope

@@ -2,7 +2,7 @@ class CreateSsoSessions < ActiveRecord::Migration
   def change
     enable_extension 'uuid-ossp'
 
-    create_table :sso_sessions, id: :uuid do |t|
+    create_table :sso_sessions, id: :uuid, force: true do |t|
       t.references  "access_grant", index: true
       t.references  "access_token", index: true
       t.references  "application",  index: true
@@ -15,7 +15,7 @@ class CreateSsoSessions < ActiveRecord::Migration
       t.datetime "activity_at",     null: false
       t.datetime "revoked_at"
       t.string   "revoke_reason"
-      t.timestamps
+      t.timestamps null: false
     end
 
     add_index :sso_sessions, [:owner_id, :access_token_id, :application_id], where: 'revoked_at IS NULL AND access_token_id IS NOT NULL', unique: true, name: :one_access_token_per_owner
@@ -24,6 +24,5 @@ class CreateSsoSessions < ActiveRecord::Migration
     add_index :sso_sessions, :secret
     add_index :sso_sessions, :ip
     add_index :sso_sessions, :revoke_reason
-
   end
 end

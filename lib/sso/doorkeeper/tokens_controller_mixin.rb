@@ -21,10 +21,15 @@ module Sso
         # We cannot rely on session[:sso_session_id] here because the end-user might have cookies disabled.
         # The only thing we can rely on to identify the user/Passport is the incoming grant token.
         debug { %(Detected outgoing "Access Token" #{outgoing_access_token.inspect}) }
-        if sso_session = Sso::Session.update_master_with_access_token(grant_token, outgoing_access_token)
-          debug { "::Sso::Session.register_access_token success for access_token: #{outgoing_access_token}" }
+
+        unless client = ::Sso::Client.find_by_grant_token(grant_token)
+          error { "::Sso::Client not found for grant token #{grant_token}" }
+        end
+
+        if client.update_access_token(outgoing_access_token)
+          debug { "::Sso::Client.update_access_token success for access_token: #{outgoing_access_token}" }
         else
-          debug { "::Sso::Session.register_access_token failed. #{sso_session.errors.inspect}" }
+          error { "::Sso::Session.update_access_token failed. #{client.errors.inspect}" }
           warden.logout
         end
       end
