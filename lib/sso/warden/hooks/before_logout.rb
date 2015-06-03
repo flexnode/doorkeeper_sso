@@ -7,7 +7,6 @@ module Sso
         attr_reader :user, :warden, :options
         delegate :request, to: :warden
         delegate :params, to: :request
-        delegate :session, to: :request
 
         def self.to_proc
           proc do |user, warden, options|
@@ -21,12 +20,22 @@ module Sso
 
         def call
           # Only run if user is logged in
-          if warden.authenticated?(:user) && (session = warden.session(:user))
-            debug { 'Destroy all Sso::Session groups before logout' }
-            debug { session.inspect }
+          if logged_in?
+            debug { "Logout Sso::Session - #{session["sso_session_id"]}" }
             Sso::Session.logout(session["sso_session_id"])
-            #Passports.logout passport_id: params['passport_id'], provider_passport_id: session['sso_session_id']
           end
+        end
+
+        def scope
+          scope = options[:scope]
+        end
+
+        def session
+          warden.session(scope)
+        end
+
+        def logged_in?
+          warden.authenticated?(:user) && session
         end
       end
     end

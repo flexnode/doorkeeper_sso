@@ -7,11 +7,6 @@ end
 Bundler.require :default, :test
 
 require 'rake'
-task :environment do
-  Combustion.initialize!
-end
-Combustion::Application.load_tasks
-
 APP_RAKEFILE = File.expand_path("../spec/test_app/Rakefile", __FILE__)
 load 'rails/tasks/engine.rake'
 require "rspec/core/rake_task"
