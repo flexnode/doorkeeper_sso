@@ -19,6 +19,8 @@ gem 'doorkeeper'
 gem 'omniauth-oauth2'
 gem 'warden'
 gem 'active_model_serializers'
+gem 'api-auth'
+gem 'rest-client'
 
 group :test do
   gem 'rspec-rails'
