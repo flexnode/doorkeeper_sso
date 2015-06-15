@@ -10,11 +10,11 @@ module Sso
 
         def self.to_proc
           proc do |user, warden, options|
-            new(user: user, warden: warden, options: options).call
+            new(user, warden, options).call
           end
         end
 
-        def initialize(user:, warden:, options:)
+        def initialize(user, warden, options)
           @user, @warden, @options = user, warden, options
         end
 
@@ -41,7 +41,7 @@ module Sso
         end
 
         def logged_in?
-          warden.authenticated?(:user) && session
+          warden.authenticated?(scope) && session && user
         end
       end
     end

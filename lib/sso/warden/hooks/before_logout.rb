@@ -10,19 +10,20 @@ module Sso
 
         def self.to_proc
           proc do |user, warden, options|
-            new(user: user, warden: warden, options: options).call
+            new(user, warden, options).call
           end
         end
 
-        def initialize(user:, warden:, options:)
+        def initialize(user, warden, options)
           @user, @warden, @options = user, warden, options
         end
 
         def call
           # Only run if user is logged in
           if logged_in?
-            debug { "Logout Sso::Session - #{session["sso_session_id"]}" }
-            Sso::Session.logout(session["sso_session_id"])
+            debug { "#BeforeLogout Sso::Session - #{session["sso_session_id"]}" }
+            debug { "user is #{user.inspect}" }
+            ::Sso::Session.logout(session["sso_session_id"])
           end
         end
 
@@ -35,7 +36,7 @@ module Sso
         end
 
         def logged_in?
-          warden.authenticated?(:user) && session
+          warden.authenticated?(scope) && session && user
         end
       end
     end

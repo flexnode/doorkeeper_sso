@@ -10,11 +10,11 @@ module Sso
 
         def self.to_proc
           proc do |user, warden, options|
-            new(user: user, warden: warden, options: options).call
+            new(user, warden, options).call
           end
         end
 
-        def initialize(user:, warden:, options:)
+        def initialize(user, warden, options)
           @user, @warden, @options = user, warden, options
         end
 
@@ -22,9 +22,9 @@ module Sso
           debug { "Starting hook after user is fetched into the session" }
 
           # Infinite loop with BeforeLogout - before logout runs this too
-          unless Sso::Session.find_by(id: session["sso_session_id"]).try(:active?)
-            warden.logout(:user)
-            throw(:warden, :scope => scope, :reason => "Sso::Session not found")
+          unless logged_in? && Sso::Session.find_by_id(session["sso_session_id"]).try(:active?)
+            warden.logout(scope)
+            throw(:warden, :scope => scope, :reason => "Sso::Session INACTIVE")
           end
         end
 
@@ -37,7 +37,7 @@ module Sso
         end
 
         def logged_in?
-          warden.authenticated?(:user) && session
+          warden.authenticated?(scope) && session && user
         end
       end
     end
