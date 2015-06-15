@@ -63,43 +63,14 @@ module Sso
       end
 
       def logout(sso_session_id)
-        session = find_by_id(sso_session_id)
-        return false if session.blank?
+        return false unless session = find_by_id(sso_session_id)
         session.logout
       end
-
-      # def update_master_with_grant(master_sso_session_id, oauth_grant)
-      #   master_sso_session = active.find(master_sso_session_id)
-
-      #   if master_sso_session.update_attribute(:access_grant_id, oauth_grant.id)
-      #     debug { "#update_master_with_grant : #{master_sso_session.id} with Access Grant ID #{oauth_grant.id} which is #{oauth_grant.token}" }
-      #   else
-      #     error { "#update_master_with_grant : FAILED to update oauth_grant" }
-      #   end
-      # end
-
-      # def update_master_with_access_token(grant_token, access_token)
-      #   oauth_grant  = ::Doorkeeper::AccessGrant.by_token(grant_token)
-      #   oauth_token  = ::Doorkeeper::AccessToken.by_token(access_token)
-      #   return false if oauth_token.blank? or oauth_grant.blank?
-
-      #   master_sso_session = active.with_grant_id(oauth_grant.id).first
-
-      #   if master_sso_session.update_attributes(access_token_id: oauth_token.id, application_id: oauth_token.application_id)
-      #     debug { "#register_access_token : #{master_sso_session.id} with Access Token ID #{oauth_token.id} which is #{oauth_token.token}" }
-      #   else
-      #     error { "#register_access_token : FAILED to update oauth_access_token_id" }
-      #   end
-      #   master_sso_session
-      # end
     end
 
     def create_session(token, options = {})
       create(access_token_id)
     end
-    # def to_s
-    #   ['Sso:Session', owner_id, ip, activity_at].join ', '
-    # end
 
     def active?
       revoked_at.blank?

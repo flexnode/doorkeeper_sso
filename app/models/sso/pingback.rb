@@ -4,26 +4,12 @@ require_dependency "rest-client"
 module Sso
   class Pingback
 
-    attr_accessor :url
-    attr_reader   :data, :api_id, :api_secret
-
-    def initialize(url, api_id, api_secret, data)
-      @url = url
-      @data = data
-      @api_id = api_id
-      @api_secret = api_secret
-    end
-
     def call
-      signed_request
-    end
-
-    def request
-      @request ||= ::RestClient::Request.new(url: url, method: :post, payload: data.to_json, headers: {:content_type => :json, :accept => :json})
-    end
-
-    def signed_request
-      @signed_request ||= ::ApiAuth.sign!(request, api_id, api_secret)
+      ::Doorkeeper::Application.all.each do |app|
+      unless app.pingback_uri.blank?
+        notifier = ::Sso::Notifier.new(app.pingback_uri, app.uid, app.secret, ::Sso::SessionSerializer.new(self))
+        pingback.call
+      end
     end
   end
 end

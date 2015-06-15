@@ -137,6 +137,18 @@ RSpec.describe Sso::Session, :type => :model do
     end
   end
 
+  describe "::active?" do
+    context "active" do
+      subject(:sso_session) { Fabricate('Sso::Session') }
+      it { expect(sso_session.active?).to be_truthy }
+    end
+
+    context "inactive" do
+      subject(:sso_session) { Fabricate('Sso::Session', revoked_at: Time.now, revoke_reason: "logout") }
+      it { expect(sso_session.active?).to be_falsey }
+    end
+  end
+
   # describe "::update_master_with_grant" do
   #   let(:user) { Fabricate(:user) }
   #   let(:attributes) { { ip: "10.1.1.1", agent: "Safari" } }

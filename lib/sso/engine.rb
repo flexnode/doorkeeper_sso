@@ -35,7 +35,7 @@ module Sso
       ::Warden::Manager.after_authentication(scope: :user, &::Sso::Warden::Hooks::AfterAuthentication.to_proc)
       ::Warden::Manager.before_logout(scope: :user, &::Sso::Warden::Hooks::BeforeLogout.to_proc)
 
-      # TODO : Infinite loop with before_logout
+      # TODO : Do we want to ensure that session is always active?
       # ::Warden::Manager.after_fetch(scope: :user, &::Sso::Warden::Hooks::SessionCheck.to_proc)
 
       # TODO : Why does it need a passport strategy
