@@ -14,7 +14,7 @@ module Sso
       @api_secret = api_secret
     end
 
-    def call
+    def execute
       signed_request.execute
     end
 
