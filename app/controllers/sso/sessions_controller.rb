@@ -28,7 +28,7 @@ module Sso
     def create
       # passport.load_user!
       # passport.create_chip!
-      current_client = ::Sso::Client.find_by_access_token(doorkeeper_token.token)
+      current_client = ::Sso::Client.find_by_access_token(doorkeeper_token.id)
       current_client.update!(client_params)
 
       @session = current_client.session
