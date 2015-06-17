@@ -17,6 +17,10 @@ module Sso
     end
 
     def call
+      execute if logged_in?
+    end
+
+    def execute
       return false unless sso_session = ::Sso::Session.find_by_id(session["sso_session_id"])
       ::Doorkeeper::Application.all.each do |app|
         debug { "Pingback Sso::Pingback for #{app.inspect}" }
@@ -24,7 +28,7 @@ module Sso
           data = ::Sso::SessionSerializer.new(sso_session)
           debug { data.inspect }
           notifier = ::Sso::Notifier.new(app.pingback_uri, app.uid, app.secret, data)
-          pingback.call
+          notifier.execute
         end
       end
     end

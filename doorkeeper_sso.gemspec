@@ -19,12 +19,12 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = '>= 1.9'
 
-  s.add_dependency "rails", "~> 4.0"
-  s.add_dependency 'devise', '~> 3.4'
+  s.add_dependency 'warden', '>= 1.2.3'
   s.add_dependency 'doorkeeper', '~> 2.0'
 
+  s.add_runtime_dependency "rails", "~> 4.0"
+  s.add_runtime_dependency 'devise', '~> 3.4'
   s.add_runtime_dependency 'omniauth-oauth2', '>= 1.2'
-  s.add_runtime_dependency 'warden', '>= 1.2.3'
   s.add_runtime_dependency 'active_model_serializers', '~> 0.10.0.rc1'
   s.add_runtime_dependency 'api-auth', '~> 1.3.1'
   s.add_runtime_dependency 'rest-client', '~> 1.8.0'
