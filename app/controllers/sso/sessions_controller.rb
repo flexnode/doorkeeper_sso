@@ -1,12 +1,9 @@
 module Sso
   class SessionsController < Sso::ApplicationController
+    include ::Sso::Logging
 
-    before_action :authenticate_user!, only: :jsonp
+    before_action :authenticate_user!, only: [:jsonp]
     before_action :doorkeeper_authorize!, only: [:show, :create]
-
-    # TODO: Security issue?
-    protect_from_forgery with: :null_session
-
     respond_to :json
 
     ################################################################################
@@ -26,12 +23,11 @@ module Sso
     # Passport Strategy first exchange
     # Insider : Client information from Apps should always be trusted
     def create
-      # passport.load_user!
-      # passport.create_chip!
-      current_client = ::Sso::Client.find_by_access_token(doorkeeper_token.id)
-      current_client.update!(client_params)
-
       @session = current_client.session
+      debug { "SessionsController#create - #{@session.inspect}"}
+      raise "ResourceOwner from token != session.owner" if doorkeeper_token.resource_owner_id != @session.owner.id
+
+      current_client.update_attributes!(client_params)
       render json: @session, status: :created, serializer: Sso::SessionSerializer
     end
 
@@ -50,6 +46,9 @@ module Sso
     ################################################################################
     def mobile
       # TODO : Check inconsistent
+
+      # passport.load_user!
+      # passport.create_chip!
       render :nothing => true
       # respond_with @session, :location => sso.sessions_url
     end
@@ -59,7 +58,15 @@ module Sso
   protected
 
     def current_client
-      @client = doorkeeper_token.sso_client
+      @current_client ||= doorkeeper_token.sso_client
+    end
+
+    def current_resource_owner
+      @current_resource_owner ||= User.find(doorkeeper_token.resource_owner_id)
+    end
+
+    def current_session
+      @current_session = current_client.session
     end
 
     def client_params
