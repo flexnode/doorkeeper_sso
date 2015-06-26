@@ -15,12 +15,13 @@ module Sso
         code_response = authorization.instance_variable_get("@response")
         oauth_grant = code_response.try(:auth).try(:token)
 
-        warden_session = session["warden.user.user.session"]
-        sso_session = Sso::Session.find(warden_session["sso_session_id"].to_s)
+        warden_session = session["warden.user.user.session"] || {}
+        sso_session = Sso::Session.find_by_id(warden_session["sso_session_id"].to_s)
 
-        if !sso_session.try(:active?)
+        unless sso_session.try(:active?)
           error { "ERROR : AuthorizationsControllerMixin  - Sso::Session INACTIVE) #{sso_session.inspect}"}
-          warden.logout(:user) and return
+          warden.logout(:user)
+          return false
         end
 
         if oauth_grant
@@ -28,7 +29,8 @@ module Sso
           sso_session.clients.find_or_create_by!(access_grant_id: oauth_grant.id)
         else
           error { "ERROR : AuthorizationsControllerMixin - Unable to get grant id from #{oauth_grant.inspect}"}
-          warden.logout(:user) and return
+          warden.logout(:user)
+          return false
         end
       end
     end
