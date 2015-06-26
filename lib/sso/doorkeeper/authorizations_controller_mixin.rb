@@ -19,8 +19,7 @@ module Sso
         sso_session = Sso::Session.find_by_id(warden_session["sso_session_id"].to_s)
 
         unless sso_session.try(:active?)
-          error { "ERROR : AuthorizationsControllerMixin  - Sso::Session INACTIVE) #{sso_session.inspect}"}
-          warden.logout(:user)
+          error { "ERROR : AuthorizationsControllerMixin  - Sso::Session INACTIVE) #{sso_session.inspect}" }
           return false
         end
 
@@ -28,8 +27,8 @@ module Sso
           debug { "Sso::Session.update_master_with_grant - #{sso_session.id.inspect}, #{oauth_grant.inspect}" }
           sso_session.clients.find_or_create_by!(access_grant_id: oauth_grant.id)
         else
-          error { "ERROR : AuthorizationsControllerMixin - Unable to get grant id from #{oauth_grant.inspect}"}
-          warden.logout(:user)
+          error { "ERROR : AuthorizationsControllerMixin - Unable to get grant id from #{oauth_grant.inspect}" }
+          sso_session.logout
           return false
         end
       end

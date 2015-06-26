@@ -12,16 +12,16 @@ module Sso
 
     class << self
       def find_by_grant_token(token)
-        find_by!(access_grant: ::Doorkeeper::AccessGrant.by_token(token))
+        find_by(access_grant: ::Doorkeeper::AccessGrant.by_token(token))
       end
 
       def find_by_access_token(token)
-        find_by!(access_token: ::Doorkeeper::AccessToken.by_token(token))
+        find_by(access_token: ::Doorkeeper::AccessToken.by_token(token))
       end
     end
 
     def update_access_token(token)
-      oauth_token = ::Doorkeeper::AccessToken.by_token(token)
+      return false unless oauth_token = ::Doorkeeper::AccessToken.by_token(token)
       update(access_token_id: oauth_token.id, application_id: oauth_token.application.id)
     end
   end

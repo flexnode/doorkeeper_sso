@@ -23,15 +23,19 @@ module Sso
         debug { %(Detected outgoing "Access Token" #{outgoing_access_token.inspect}) }
 
         unless client = ::Sso::Client.find_by_grant_token(grant_token)
-          error { "::Sso::Client not found for grant token #{grant_token}" }
+          return error_and_return "::Sso::Client not found for grant token #{grant_token}"
         end
 
         if client.update_access_token(outgoing_access_token)
           debug { "::Sso::Client.update_access_token success for access_token: #{outgoing_access_token}" }
         else
-          error { "::Sso::Session.update_access_token failed. #{client.errors.inspect}" }
-          warden.logout
+          return error_and_return "::Sso::Session.update_access_token failed. #{client.errors.inspect}"
         end
+      end
+
+      def error_and_return(msg)
+        error { msg }
+        return false
       end
 
       def grant_token

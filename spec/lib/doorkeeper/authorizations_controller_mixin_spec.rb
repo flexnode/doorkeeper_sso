@@ -31,30 +31,35 @@ RSpec.describe Doorkeeper::AuthorizationsController do
     allow_any_instance_of(described_class).to receive(:session).and_return(warden_session)
   end
 
-  describe "working" do
-    it "creates clint with grant_id" do
-      controller.send(:after_grant_create)
-      expect(access_grant.sso_client).to be_a ::Sso::Client
+  describe "#after_grant_create" do
+    context "working" do
+      it "creates client with grant_id" do
+        controller.send(:after_grant_create)
+        expect(access_grant.sso_client).to be_a ::Sso::Client
+      end
+    end
+
+    context "no grant" do
+      let(:access_grant) { nil }
+
+      it "logs error" do
+        expect(controller).to receive(:error)
+        controller.send(:after_grant_create)
+      end
+
+      it "logout session" do
+        expect_any_instance_of(::Sso::Session).to receive(:logout).and_call_original
+        controller.send(:after_grant_create)
+      end
+    end
+
+    context "no session" do
+      let(:warden_session) { {} }
+
+      it "logs error" do
+        expect(controller).to receive(:error)
+        controller.send(:after_grant_create)
+      end
     end
   end
-
-  describe "no grant" do
-    let(:access_grant) { nil }
-
-    it "logs out user" do
-      expect(controller).to receive_message_chain("warden.logout")
-      controller.send(:after_grant_create)
-    end
-  end
-
-  describe "no session" do
-    let(:warden_session) { {} }
-
-    it "logs out user" do
-      expect(controller).to receive_message_chain("warden.logout")
-      controller.send(:after_grant_create)
-    end
-  end
-
-
 end

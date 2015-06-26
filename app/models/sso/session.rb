@@ -46,30 +46,10 @@ module Sso
         sso_session
       end
 
-      def generate(user, access_token, options = {})
-        master_sso_session = active.find_by!(owner_id: user.id)
-
-        attributes = ActionController::Parameters.new(options).permit(:ip, :agent, :location)
-        relations = { application: access_token.application, access_token: access_token }
-
-        debug { "Sso::Session::generate for #{user.inspect} - #{access_token.inspect} - #{attributes.inspect}" }
-
-        if client = master_sso_session_id.clients.find_by(access_token_id: access_token.id)
-          client.update_columns(attributes)
-        else
-          master_sso_session.clients.create!(relations.merge(attributes))
-        end
-        master_sso_session
-      end
-
       def logout(sso_session_id)
         return false unless session = find_by_id(sso_session_id)
         session.logout
       end
-    end
-
-    def create_session(token, options = {})
-      create(access_token_id)
     end
 
     def active?
