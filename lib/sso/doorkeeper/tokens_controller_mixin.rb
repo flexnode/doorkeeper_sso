@@ -10,7 +10,7 @@ module Sso
         after_action :after_token_create, only: :create
       end
 
-      protected
+    protected
 
       def after_token_create
         debug { "TokensController#Create : after_action" }

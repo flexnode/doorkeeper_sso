@@ -1,5 +1,6 @@
 require "sso/engine"
 require "sso/logging"
+require "sso/warden/support"
 require "sso/warden/hooks/after_authentication"
 require "sso/warden/hooks/before_logout"
 require "sso/warden/hooks/session_check"
