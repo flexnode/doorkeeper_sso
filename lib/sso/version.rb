@@ -1,3 +1,3 @@
 module Sso
-  VERSION = "0.2.7"
+  VERSION = "0.4.0"
 end
