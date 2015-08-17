@@ -1,24 +1,9 @@
 require 'rails_helper'
 
-RSpec.describe Sso::Warden::Hooks::AfterAuthentication do
+RSpec.describe Sso::Warden::Hooks::CreateMasterSession do
 
   # Set up user
   let(:user) { Fabricate(:user) }
-  # let(:application) { Fabricate('Doorkeeper::Application') }
-  # let(:access_token) { Fabricate('Doorkeeper::AccessToken',
-  #                                resource_owner_id: user.id) }
-  # let!(:access_grant) { Fabricate('Doorkeeper::AccessGrant',
-  #                                application_id: application.id,
-  #                                resource_owner_id: user.id,
-  #                                redirect_uri: 'http://localhost:3002/oauth/callback'
-  #                               ) }
-
-  # # Set up Session
-  # let(:session) {  Fabricate('Sso::Session', owner: user) }
-  # let!(:client) {  Fabricate('Sso::Client', session: session,
-  #                               application_id: application.id,
-  #                               access_token_id: access_token.id,
-  #                               access_grant_id: access_grant.id) }
 
   # Set up rack
   let(:proc)           { described_class.to_proc }
@@ -45,7 +30,44 @@ RSpec.describe Sso::Warden::Hooks::AfterAuthentication do
       expect(rack.call).to be_nil
     end
 
-    it "run #generate_session" do
+    context 'existing session' do
+      let(:sso_params) { { :ip => "202.188.0.133", :agent => "Chrome" } }
+      let(:sso_session) { ::Sso::Session.generate_master(user, sso_params ) }
+      let!(:session_params) { { "sso_session_id" => sso_session.id } }
+
+      before() { rack.call }
+
+      it { expect(::Sso::Session.count).to eq 2 }
+      it { expect(::Sso::Session.find_by_id(sso_session.id).revoke_reason).to eq "logout" }
+
+      it "runs Sso::Session.logout" do
+        expect(::Sso::Session).to receive(:logout).with(nil)
+        rack.call
+      end
+    end
+
+    context 'logged out' do
+      let(:user) { nil }
+
+      before() { rack.call }
+
+      it "will not run Sso::Session.logout" do
+        expect(::Sso::Session).not_to receive(:logout)
+        rack.call
+      end
+
+      it "will not run #generate_session" do
+        expect(rack).not_to receive(:generate_session)
+        rack.call
+      end
+    end
+
+    it "runs Sso::Session.logout" do
+      expect(::Sso::Session).to receive(:logout).with(nil)
+      rack.call
+    end
+
+    it "runs #generate_session" do
       expect(rack).to receive(:generate_session)
       rack.call
     end

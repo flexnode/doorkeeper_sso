@@ -32,7 +32,7 @@ module Sso
       ::Doorkeeper::TokensController.send(:include, Sso::Doorkeeper::TokensControllerMixin)
       ::Doorkeeper::AuthorizationsController.send(:include, Sso::Doorkeeper::AuthorizationsControllerMixin)
 
-      ::Warden::Manager.after_authentication(scope: :user, &::Sso::Warden::Hooks::AfterAuthentication.to_proc)
+      ::Warden::Manager.after_set_user(scope: :user, &::Sso::Warden::Hooks::CreateMasterSession.to_proc)
       ::Warden::Manager.before_logout(scope: :user, &::Sso::Warden::Hooks::BeforeLogout.to_proc)
 
       # TODO : Do we want to ensure that session is always active?

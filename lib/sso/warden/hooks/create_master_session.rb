@@ -1,12 +1,16 @@
 module Sso
   module Warden
     module Hooks
-      class AfterAuthentication
+      class CreateMasterSession
         include ::Sso::Warden::Support
 
         def call
-          debug { "Starting hook because this is considered the first login of the current session..." }
-          generate_session
+          if logged_in?
+            debug { "Starting hook because this is considered the first login of the current session..." }
+            debug { "Log out previous Sso:Session if exists : ID session['sso_session_id']" }
+            ::Sso::Session.logout(session["sso_session_id"])
+            generate_session
+          end
           return nil
         end
 
