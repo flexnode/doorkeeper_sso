@@ -18,6 +18,11 @@ module Sso
       def find_by_access_token(token)
         find_by(access_token: ::Doorkeeper::AccessToken.by_token(token))
       end
+
+      def create_from_access_token(session, token_id)
+        return false unless oauth_token = ::Doorkeeper::AccessToken.find_by(id: token_id)
+        client = session.find_or_create_by(access_token_id: token_id)
+      end
     end
 
     def update_access_token(token)

@@ -5,10 +5,21 @@ module Sso
       include ::Sso::Logging
 
       included do
+        # around_action :subscribe_to_token_creation, only: [:new, :create]
         after_action :after_grant_create, only: [:new, :create]
       end
 
     protected
+
+      # def subscribe_to_token_creation
+      #   Wisper.subscribe(self) do
+      #     yield
+      #   end
+      # end
+
+      # def access_token_created(token_id)
+      #   raise "AuthorizationsController#gives token - #{token_id}"
+      # end
 
       def after_grant_create
         debug { "AuthorizationsController#Create : after_action" }
