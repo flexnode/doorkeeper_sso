@@ -32,7 +32,7 @@ RSpec.describe Sso::Warden::Hooks::BeforeLogout do
 
       it "run #logout" do
         expect(::Sso::Session).to receive(:logout).with(session.id)
-        calling
+        rack.call
       end
 
       it 'revokes the passport' do
@@ -40,6 +40,11 @@ RSpec.describe Sso::Warden::Hooks::BeforeLogout do
         session.reload
         expect(session.revoked_at.to_i).to eq Time.now.to_i
         expect(session.revoke_reason).to eq 'logout'
+      end
+
+      it 'clears session' do
+        rack.call
+        expect(rack.session["sso_session_id"]).to be_nil
       end
     end
 

@@ -33,15 +33,14 @@ RSpec.describe Sso::Warden::Hooks::CreateMasterSession do
     context 'existing session' do
       let(:sso_params) { { :ip => "202.188.0.133", :agent => "Chrome" } }
       let(:sso_session) { ::Sso::Session.generate_master(user, sso_params ) }
-      let!(:session_params) { { "sso_session_id" => sso_session.id } }
+      let(:sso_session_id) { sso_session.id }
+      let!(:session_params) { { "sso_session_id" => sso_session_id } }
 
-      before() { rack.call }
-
-      it { expect(::Sso::Session.count).to eq 2 }
-      it { expect(::Sso::Session.find_by_id(sso_session.id).revoke_reason).to eq "logout" }
+      it { rack.call; expect(::Sso::Session.count).to eq 2 }
+      it { rack.call; expect(::Sso::Session.find_by_id(sso_session.id).revoke_reason).to eq "logout" }
 
       it "runs Sso::Session.logout" do
-        expect(::Sso::Session).to receive(:logout).with(nil)
+        expect(::Sso::Session).to receive(:logout).with(sso_session_id)
         rack.call
       end
     end
@@ -49,16 +48,9 @@ RSpec.describe Sso::Warden::Hooks::CreateMasterSession do
     context 'logged out' do
       let(:user) { nil }
 
-      before() { rack.call }
-
-      it "will not run Sso::Session.logout" do
+      it "will not run Sso::Session.logout but throw :warden" do
         expect(::Sso::Session).not_to receive(:logout)
-        rack.call
-      end
-
-      it "will not run #generate_session" do
-        expect(rack).not_to receive(:generate_session)
-        rack.call
+        expect { rack.call }.to raise_exception("uncaught throw :warden")
       end
     end
 
