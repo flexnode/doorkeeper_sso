@@ -6,7 +6,6 @@ module Sso
     module Authorization
       module TokenMixin
         def issue_token
-          # debug { "CodeMixin#access_token_created" }
           super
           broadcast(:access_token_created, token.id) if @token.try(:id)
           @token
