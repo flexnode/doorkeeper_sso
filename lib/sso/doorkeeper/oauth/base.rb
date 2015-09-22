@@ -12,7 +12,7 @@ module Sso
           return @sso_client if @sso_client
 
           user = User.find(@access_token.resource_owner_id)
-          sso_session = Sso::Session.generate_master(@access_token.resource_owner_id, attributes)
+          sso_session = Sso::Session.generate_master(user, {})
           @sso_client = sso_session.clients.last
         end
 
