@@ -4,10 +4,6 @@ module Sso
       module Base
         extend ActiveSupport::Concern
 
-        included do
-          attr_accessor :sso_client
-        end
-
         def sso_client
           return @sso_client if @sso_client
 
@@ -17,7 +13,7 @@ module Sso
         end
 
         def after_successful_response
-          sso_client.update_attributes(access_token_id: @access_token.id)
+          self.sso_client.update_attributes(access_token_id: @access_token.id)
           super
         end
       end

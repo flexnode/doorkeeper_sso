@@ -30,7 +30,7 @@ module Sso
         sso_session = Sso::Session.find(warden_user_session["sso_session_id"])
 
         debug { "Sso::Session.update_master_with_grant - #{sso_session.id.inspect}, #{oauth_grant.inspect}" }
-        sso_session.clients.find_or_create_by!(access_grant_id: oauth_grant.id)
+        sso_session.clients.find_or_create_by!(access_grant_id: oauth_grant.id, application_id: oauth_grant.application_id)
       rescue => e
         sso_session.try(:logout)
         raise

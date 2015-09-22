@@ -11,7 +11,7 @@ module Sso
           end
 
           debug { "NEW USER WARDEN SESSION" }
-          debug { "Log out previous Sso:Session if exists : ID session['sso_session_id']" }
+          debug { "Log out previous Sso:Session if exists : ID #{session['sso_session_id']}" }
           ::Sso::Session.logout(session["sso_session_id"])
           generate_session
           return nil
