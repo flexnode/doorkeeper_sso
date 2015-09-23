@@ -14,10 +14,6 @@ module Sso
         end
       end
 
-      def warden
-        env["warden"]
-      end
-
       def warden_user_session
         warden.session(:user)
       end
