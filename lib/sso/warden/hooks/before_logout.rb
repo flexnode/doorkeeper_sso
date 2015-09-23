@@ -10,6 +10,7 @@ module Sso
             debug { "#BeforeLogout Sso::Session - #{session["sso_session_id"]}" }
             debug { "user is #{user.inspect}" }
             ::Sso::Session.logout(session["sso_session_id"])
+            session["sso_session_id"] = nil
           end
           return nil
         end

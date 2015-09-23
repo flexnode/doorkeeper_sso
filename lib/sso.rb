@@ -7,8 +7,9 @@ require "sso/warden/hooks/session_check"
 require "sso/doorkeeper/access_grant_mixin"
 require "sso/doorkeeper/access_token_mixin"
 require "sso/doorkeeper/application_mixin"
-require "sso/doorkeeper/authorizations_controller_mixin"
-require "sso/doorkeeper/tokens_controller_mixin"
+require "sso/doorkeeper/application_controller_mixin"
+require "sso/doorkeeper/authorization"
+require "sso/doorkeeper/oauth"
 
 
 module Sso
@@ -16,3 +17,4 @@ module Sso
     'sso_'
   end
 end
+

@@ -1,6 +1,7 @@
 module Sso
   class Pingback
     include ::Sso::Logging
+    include ::Sso::Warden::Support
 
     attr_reader :user, :warden, :options
     delegate :request, to: :warden
@@ -31,18 +32,6 @@ module Sso
           notifier.execute
         end
       end
-    end
-
-    def scope
-      scope = options[:scope]
-    end
-
-    def session
-      warden.session(scope)
-    end
-
-    def logged_in?
-      warden.authenticated?(scope) && session && user
     end
   end
 end

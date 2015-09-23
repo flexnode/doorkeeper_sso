@@ -5,12 +5,15 @@ module Sso
         include ::Sso::Warden::Support
 
         def call
-          if logged_in?
-            debug { "Starting hook because this is considered the first login of the current session..." }
-            debug { "Log out previous Sso:Session if exists : ID session['sso_session_id']" }
-            ::Sso::Session.logout(session["sso_session_id"])
-            generate_session
+          unless logged_in?
+            throw(:warden)
+            raise "DoorkeeperSso : CreateMasterSession requires an authenticated session" and return
           end
+
+          debug { "NEW USER WARDEN SESSION" }
+          debug { "Log out previous Sso:Session if exists : ID #{session['sso_session_id']}" }
+          ::Sso::Session.logout(session["sso_session_id"])
+          generate_session
           return nil
         end
 

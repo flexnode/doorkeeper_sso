@@ -17,10 +17,11 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]
   s.test_files  = Dir['spec/**/*'] & `git ls-files -z`.split("\0")
 
-  s.required_ruby_version = '>= 1.9'
+  s.required_ruby_version = '>= 2.0'
 
   s.add_dependency 'warden', '>= 1.2.3'
   s.add_dependency 'doorkeeper', '~> 2.0'
+  s.add_dependency 'wisper', '2.0.0.rc1'
 
   s.add_runtime_dependency "rails", "~> 4.0"
   s.add_runtime_dependency 'devise', '~> 3.4'
@@ -28,6 +29,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'active_model_serializers', '~> 0.10.0.rc1'
   s.add_runtime_dependency 'api-auth', '~> 1.3.1'
   s.add_runtime_dependency 'rest-client', '~> 1.8.0'
+
 
   # Development
   s.add_development_dependency 'database_cleaner', '>= 1.4'
