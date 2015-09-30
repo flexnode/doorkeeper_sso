@@ -116,7 +116,8 @@ RSpec.describe Sso::Session, :type => :model do
       Sso::Session.logout(sso_session.id)
       new_session = Sso::Session.find(sso_session.id)
 
-      expect(new_session.clients.first.access_token.revoked_at).not_to be_blank # client access token should be revoked
+      expect(new_session.clients.count).to eq(2) # Should have 2 clients for a session
+      expect(new_session.clients.with_access_token.first.access_token.revoked_at).not_to be_blank # Client access token should be revoked
       expect(new_session.revoked_at).not_to be_blank
       expect(new_session.revoke_reason).to eq("logout")
     end

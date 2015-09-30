@@ -10,6 +10,8 @@ module Sso
     validates :access_grant_id, uniqueness: { allow_nil: true }
     validates :access_token_id, uniqueness: { allow_nil: true }
 
+    scope :with_access_token, -> { where.not(access_token: nil) }
+
     class << self
       def find_by_grant_token(token)
         find_by(access_grant: ::Doorkeeper::AccessGrant.by_token(token))
