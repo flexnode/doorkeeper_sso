@@ -48,6 +48,9 @@ module Sso
 
       def logout(sso_session_id)
         return false unless session = find_by_id(sso_session_id)
+        session.clients.each do |c|
+          c.access_token.revoke unless c.access_token.blank?
+        end
         session.logout
       end
     end

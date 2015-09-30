@@ -98,12 +98,25 @@ RSpec.describe Sso::Session, :type => :model do
   end
 
   describe "::logout" do
-    let!(:sso_session) { Fabricate('Sso::Session') }
-    let!(:user) { sso_session.owner }
+    let(:user) { Fabricate(:user) }
+    let(:access_token) { Fabricate('Doorkeeper::AccessToken',
+                                   resource_owner_id: user.id) }
+    let(:access_grant) { Fabricate('Doorkeeper::AccessGrant',
+                                   application_id: nil,
+                                   resource_owner_id: user.id,
+                                   redirect_uri: 'http://localhost:3002/oauth/callback'
+                                  ) }
 
-    it "revokes session" do
+    let(:sso_session) {  Fabricate('Sso::Session', owner: user) }
+    let!(:sso_client) {  Fabricate('Sso::Client', session: sso_session,
+                                  access_token_id: access_token.id,
+                                  access_grant_id: access_grant.id) }
+
+    it "revokes session and access token" do
       Sso::Session.logout(sso_session.id)
       new_session = Sso::Session.find(sso_session.id)
+
+      expect(new_session.clients.first.access_token.revoked_at).not_to be_blank # client access token should be revoked
       expect(new_session.revoked_at).not_to be_blank
       expect(new_session.revoke_reason).to eq("logout")
     end
