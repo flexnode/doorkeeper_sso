@@ -10,6 +10,7 @@ module Sso
     validates :access_grant_id, uniqueness: { allow_nil: true }
     validates :access_token_id, uniqueness: { allow_nil: true }
 
+    scope :with_access_grant, -> { where.not(access_grant: nil) }
     scope :with_access_token, -> { where.not(access_token: nil) }
 
     class << self
