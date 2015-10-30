@@ -1,3 +1,4 @@
+require "rails"
 require "active_model_serializers"
 require "wisper"
 require "sso"
