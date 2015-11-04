@@ -1,17 +1,21 @@
 {
   "type": "object",
   "required" : [
+    "client_id",
     "id",
     "active?",
     "secret",
-    "owner"
+    "owner",
+    "random_token"
   ],
   "properties": {
+    "client_id" : { "type" : "string" },
     "id" : { "type" : "string" },
     "active?" : { "type" : "boolean" },
     "revoked_at" : { "type": ["string", "null"], "format": "date-time" },
     "revoke_reason" : { "type": ["string", "null"] },
     "secret" : { "type" : "string" },
+    "random_token" : { "type" : "string" },
     "owner" : {
       "type" : "object",
       "required" : [

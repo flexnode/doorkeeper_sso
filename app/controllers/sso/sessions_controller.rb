@@ -15,20 +15,21 @@ module Sso
     # Sessionless (iphone/outsider)
     # Returns passport
     def show
-      @session = current_client.session
-      render json: @session, serializer: Sso::SessionSerializer
+      @client = current_client
+      render json: @client, serializer: Sso::ClientSerializer
     end
 
     # Passport exchange
     # Passport Strategy first exchange
     # Insider : Client information from Apps should always be trusted
     def create
-      @session = current_client.session
+      @client = current_client
+      @session = @client.session
       debug { "SessionsController#create - #{@session.inspect}"}
       raise "ResourceOwner from token != session.owner" if doorkeeper_token.resource_owner_id != @session.owner.id
 
-      current_client.update_attributes!(client_params)
-      render json: @session, status: :created, serializer: Sso::SessionSerializer
+      @client.update_attributes!(client_params)
+      render json: @client, status: :created, serializer: Sso::ClientSerializer
     end
 
     ################################################################################

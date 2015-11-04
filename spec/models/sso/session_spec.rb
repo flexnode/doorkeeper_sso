@@ -92,7 +92,7 @@ RSpec.describe Sso::Session, :type => :model do
 
     context "(failure)" do
       it "raises exception" do
-        expect { Sso::Session.generate_master(nil) }.to raise_exception
+        expect { Sso::Session.generate_master(nil, nil) }.to raise_exception(ActiveRecord::RecordInvalid)
       end
     end
   end

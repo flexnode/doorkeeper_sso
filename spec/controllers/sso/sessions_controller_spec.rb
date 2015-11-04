@@ -59,7 +59,7 @@ RSpec.describe Sso::SessionsController, :type => :controller do
       end
 
       it { expect(response).to have_http_status(:ok) }
-      it { expect(assigns(:session)).to eq session }
+      it { expect(assigns(:client)).to eq client }
       it { expect(response).to match_response_schema("session") }
     end
   end

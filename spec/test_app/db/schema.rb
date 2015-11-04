@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150603145730) do
+ActiveRecord::Schema.define(version: 20151104090509) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -78,8 +78,12 @@ ActiveRecord::Schema.define(version: 20150603145730) do
     t.string   "location"
     t.string   "device"
     t.datetime "activity_at"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+    t.string   "device_os"
+    t.string   "device_os_version"
+    t.string   "device_model"
+    t.string   "random_token",      null: false
   end
 
   add_index "sso_clients", ["access_grant_id"], name: "index_sso_clients_on_access_grant_id", using: :btree
@@ -97,7 +101,6 @@ ActiveRecord::Schema.define(version: 20150603145730) do
     t.integer  "access_token_id"
     t.integer  "application_id"
     t.integer  "owner_id",        null: false
-    t.string   "group_id",        null: false
     t.string   "secret",          null: false
     t.datetime "activity_at",     null: false
     t.datetime "revoked_at"
@@ -109,7 +112,6 @@ ActiveRecord::Schema.define(version: 20150603145730) do
   add_index "sso_sessions", ["access_grant_id"], name: "index_sso_sessions_on_access_grant_id", using: :btree
   add_index "sso_sessions", ["access_token_id"], name: "index_sso_sessions_on_access_token_id", using: :btree
   add_index "sso_sessions", ["application_id"], name: "index_sso_sessions_on_application_id", using: :btree
-  add_index "sso_sessions", ["group_id"], name: "index_sso_sessions_on_group_id", using: :btree
   add_index "sso_sessions", ["owner_id", "access_token_id", "application_id"], name: "one_access_token_per_owner", unique: true, where: "((revoked_at IS NULL) AND (access_token_id IS NOT NULL))", using: :btree
   add_index "sso_sessions", ["owner_id"], name: "index_sso_sessions_on_owner_id", using: :btree
   add_index "sso_sessions", ["revoke_reason"], name: "index_sso_sessions_on_revoke_reason", using: :btree

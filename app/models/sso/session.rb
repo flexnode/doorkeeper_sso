@@ -16,7 +16,6 @@ module Sso
     scope :master, -> { where(application_id: nil) }
 
     before_validation :ensure_secret
-    before_validation :ensure_group_id
     before_validation :ensure_activity_at
 
     class << self
@@ -67,10 +66,6 @@ module Sso
 
     def ensure_secret
       self.secret ||= SecureRandom.uuid
-    end
-
-    def ensure_group_id
-      self.group_id ||= SecureRandom.uuid
     end
 
     def ensure_activity_at
