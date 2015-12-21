@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151104090509) do
+ActiveRecord::Schema.define(version: 20151221071537) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -83,7 +83,6 @@ ActiveRecord::Schema.define(version: 20151104090509) do
     t.string   "device_os"
     t.string   "device_os_version"
     t.string   "device_model"
-    t.string   "random_token",      null: false
   end
 
   add_index "sso_clients", ["access_grant_id"], name: "index_sso_clients_on_access_grant_id", using: :btree

@@ -6,11 +6,5 @@ class AddDeviceInformationToSsoClients < ActiveRecord::Migration
       t.string      "device_model"
       t.string      "random_token"
     end
-
-    Sso::Client.find_each do |client|
-      client.save
-    end
-
-    change_column :sso_clients, :random_token, :string, :null => true
   end
 end
