@@ -8,7 +8,7 @@ GIT
 PATH
   remote: .
   specs:
-    doorkeeper_sso (0.4.7)
+    doorkeeper_sso (0.4.8)
       active_model_serializers (~> 0.10.0.rc1)
       api-auth (~> 1.3.1)
       devise (~> 3.4)
