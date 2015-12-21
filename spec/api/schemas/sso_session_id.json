@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "required" : [
+    "passport_id"
+  ],
+  "properties": {
+    "passport_id" : { "type" : "string" }
+  }
+}

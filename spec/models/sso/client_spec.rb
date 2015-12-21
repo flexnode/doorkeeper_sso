@@ -56,13 +56,4 @@ RSpec.describe Sso::Client, :type => :model do
       expect(client.access_token).to eq access_token
     end
   end
-
-  describe "#ensure_random_token" do
-    subject!(:client) {  Fabricate('Sso::Client', session: session,
-                                application_id: application.id,
-                                access_grant_id: access_grant.id) }
-
-    it { expect(client.random_token).not_to be_blank }
-  end
-
 end

@@ -3,7 +3,7 @@ module Sso
     delegate :id, :active?, :revoked_at, :revoke_reason, :secret, to: :session
 
     attribute  :id, :key => :client_id
-    attributes :id, :active?, :revoked_at, :revoke_reason, :secret, :random_token
+    attributes :id, :active?, :revoked_at, :revoke_reason, :secret
 
 
     belongs_to :owner, serializer: Sso::OwnerSerializer # WTH : hack to load owner using serializer
