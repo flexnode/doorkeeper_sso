@@ -2,22 +2,13 @@ module Sso
   class SessionsController < Sso::ApplicationController
     include ::Sso::Logging
 
-    before_action :authenticate_user!, only: [:jsonp]
-    before_action :doorkeeper_authorize!, only: [:show, :create]
+    before_action :doorkeeper_authorize!, only: :create
+    before_action :authenticate_user!, except: :create
     respond_to :json
 
     ################################################################################
-    # OAuth2 Endpoint
+    # OAuth2 Endpoints
     ################################################################################
-
-    # Passport verification
-    # Session exists (browser/insider) - return passport state
-    # Sessionless (iphone/outsider)
-    # Returns passport
-    def show
-      @client = current_client
-      render json: @client, serializer: Sso::ClientSerializer
-    end
 
     # Passport exchange
     # Passport Strategy first exchange
@@ -35,28 +26,25 @@ module Sso
     ################################################################################
     # JSONP endpoint based on Devise session
     ################################################################################
-    def jsonp
-      # TODO : Check inconsistent
-      render :nothing => true
-      # respond_with @session, :location => sso.sessions_url
+    def id
+      render json:  { passport_id: sso_session_id }
     end
 
-
-    ################################################################################
-    # Mobile endpoint
-    ################################################################################
-    def mobile
-      # TODO : Check inconsistent
-
-      # passport.load_user!
-      # passport.create_chip!
-      render :nothing => true
-      # respond_with @session, :location => sso.sessions_url
+    # Passport verification
+    # Session exists (browser/insider) - return passport state
+    # Sessionless (iphone/outsider)
+    # Returns passport
+    def show
+      @session = Sso::Session.find(sso_session_id)
+      render json: @session, serializer: Sso::SessionSerializer
     end
-
 
 
   protected
+
+    def sso_session_id
+      warden.session(:user)["sso_session_id"]
+    end
 
     def current_client
       @current_client ||= doorkeeper_token.sso_client
@@ -66,10 +54,6 @@ module Sso
       @current_resource_owner ||= User.find(doorkeeper_token.resource_owner_id)
     end
 
-    def current_session
-      @current_session = current_client.session
-    end
-
     def client_params
       params.permit(:ip, :agent)
     end
@@ -77,28 +61,3 @@ module Sso
   end
 end
 
-
-#passport exchange
-          # finding = ::SSO::Server::Passports.find_by_access_token_id(access_token.id)
-          # if finding.failure?
-          #   # This should never happen. Every Access Token should be connected to a Passport.
-          #   return json_error :passport_not_found
-          # end
-          # passport = finding.object
-
-          # ::SSO::Server::Passports.update_activity passport_id: passport.id, request: request
-
-          # debug { "Attaching user and chip to passport #{passport.inspect}" }
-          # passport.load_user!
-          # passport.create_chip!
-
-          # payload = { success: true, code: :here_is_your_passport, passport: passport.export }
-          # debug { "Created Passport #{passport.id}, sending it including user #{passport.user.inspect}}" }
-
-          # [200, { 'Content-Type' => 'application/json' }, [payload.to_json]]
-
-#passport  verification
-
-          # if request.get? && request.path == passports_path
-          #   debug { 'Detected incoming Passport verification request.' }
-          #   env['warden'].authenticate! :passport
